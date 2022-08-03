@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist/models/task_data.dart';
 
 class AddTaskScreen extends StatelessWidget {
 
@@ -12,7 +13,7 @@ class AddTaskScreen extends StatelessWidget {
       color: Color(0xff757575),
       child: Container(
         padding: EdgeInsets.all(20.0),
-        margin: EdgeInsets.symmetric(horizontal: 20.0),
+        margin: EdgeInsets.symmetric(horizontal: 25.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -28,20 +29,21 @@ class AddTaskScreen extends StatelessWidget {
               ),
             ),
             TextFormField(
-              onChanged: (newText){
-                newTaskTitle = newText;
-              },
               decoration: InputDecoration(
                 hintText: 'Add task to your list',
                 border: InputBorder.none,
               ),
-              textAlign: TextAlign.center,
               autofocus: true,
+              textAlign: TextAlign.center,
               cursorColor: Colors.transparent,
               textCapitalization: TextCapitalization.sentences,
+              onChanged: (newText){
+                newTaskTitle = newText;
+              },
             ),
             TextButton(onPressed: () {
-              final task = Task(name: newTaskTitle, isDone: false);
+              Provider.of<TaskData>(context, listen: false).addTask(newTaskTitle);
+              Navigator.pop(context);
             },
             child: Text(
               'Done',
